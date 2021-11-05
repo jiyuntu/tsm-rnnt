@@ -13,7 +13,7 @@ from allennlp.common.util import START_SYMBOL, END_SYMBOL
 from allennlp.data.dataset_readers.dataset_reader import DatasetReader
 from allennlp.data.fields import TextField, ArrayField, LabelField
 from allennlp.data.instance import Instance
-from allennlp.data.tokenizers import Tokenizer, WordTokenizer, Token
+from allennlp.data.tokenizers import Tokenizer, SpacyTokenizer, Token
 from allennlp.data.token_indexers import TokenIndexer, SingleIdTokenIndexer
 
 from stt.dataset_readers.utils import pad_and_stack, process_phone, word_to_phones
@@ -39,7 +39,7 @@ class KaldiSpeechToTextDatasetReader(DatasetReader):
     ----------
     source_tokenizer : ``Tokenizer``, optional
         Tokenizer to use to split the input sequences into words or other kinds of tokens. Defaults
-        to ``WordTokenizer()``.
+        to ``SpacyTokenizer()``.
     target_tokenizer : ``Tokenizer``, optional
         Tokenizer to use to split the output sequences (during training) into words or other kinds
         of tokens. Defaults to ``source_tokenizer``.
@@ -78,7 +78,7 @@ class KaldiSpeechToTextDatasetReader(DatasetReader):
 
         self.cc = OpenCC('s2t')
         self.w2p = word_to_phones(self.lexicon)
-        self._target_tokenizer = target_tokenizer or WordTokenizer()
+        self._target_tokenizer = target_tokenizer or SpacyTokenizer()
         self._target_token_indexers = target_token_indexers or {
             "tokens": SingleIdTokenIndexer()}
         self._delimiter = delimiter

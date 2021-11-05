@@ -2,8 +2,7 @@ from typing import List, Callable
 
 from overrides import overrides
 
-from allennlp.data.tokenizers.token import Token
-from allennlp.data.tokenizers.tokenizer import Tokenizer
+from allennlp.data.tokenizers.tokenizer import Tokenizer, Token
 
 
 @Tokenizer.register("phoneme")

@@ -12,7 +12,7 @@ from allennlp.common.util import START_SYMBOL, END_SYMBOL
 from allennlp.data.dataset_readers.dataset_reader import DatasetReader
 from allennlp.data.fields import TextField, ArrayField, MetadataField, LabelField
 from allennlp.data.instance import Instance
-from allennlp.data.tokenizers import Tokenizer, WordTokenizer, Token
+from allennlp.data.tokenizers import Tokenizer, SpacyTokenizer, Token
 from allennlp.data.token_indexers import TokenIndexer, SingleIdTokenIndexer
 
 from stt.dataset_readers.utils import pad_and_stack
@@ -59,7 +59,7 @@ class SpeechToTextDatasetReader(DatasetReader):
                  delimiter: str = "\t",
                  lazy: bool = False) -> None:
         super().__init__(lazy)
-        self._target_tokenizer = target_tokenizer or WordTokenizer()
+        self._target_tokenizer = target_tokenizer or SpacyTokenizer()
         self._target_token_indexers = target_token_indexers or {
             "tokens": SingleIdTokenIndexer()}
         self._delimiter = delimiter

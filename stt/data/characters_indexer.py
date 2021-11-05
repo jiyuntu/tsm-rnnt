@@ -7,7 +7,7 @@ import torch
 
 from allennlp.common.checks import ConfigurationError
 from allennlp.common.util import pad_sequence_to_length, START_SYMBOL, END_SYMBOL
-from allennlp.data.tokenizers.token import Token
+from allennlp.data.tokenizers import Token
 from allennlp.data.token_indexers.token_indexer import TokenIndexer
 from allennlp.data.vocabulary import Vocabulary
 from allennlp.data.tokenizers.character_tokenizer import CharacterTokenizer
@@ -15,7 +15,7 @@ from allennlp.data.tokenizers.tokenizer import Tokenizer
 
 
 @TokenIndexer.register("just-characters")
-class CharactersIndexer(TokenIndexer[List[int]]):
+class CharactersIndexer(TokenIndexer):
     """
     This :class:`TokenIndexer` represents tokens as lists of character indices.
 
@@ -100,11 +100,6 @@ class CharactersIndexer(TokenIndexer[List[int]]):
     def get_padding_lengths(self, token: int) -> Dict[str, int]:
         return {}
 
-    @overrides
-    def get_padding_token(self) -> List[int]:
-        return []
-
-    @overrides
     def as_padded_tensor(self,
                          tokens: Dict[str, List[int]],
                          desired_num_tokens: Dict[str, int],

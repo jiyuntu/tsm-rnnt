@@ -8,11 +8,12 @@ import torch
 from torch.nn.utils.rnn import pad_packed_sequence, pack_padded_sequence, PackedSequence
 from allennlp.common.checks import ConfigurationError
 from allennlp.modules.seq2seq_encoders.seq2seq_encoder import Seq2SeqEncoder
-from allennlp.modules.seq2seq_encoders import _Seq2SeqWrapper
+from allennlp.modules.seq2seq_encoders import PytorchSeq2SeqWrapper
 
 from stt.models.custom_lstms import script_lstm, script_lnlstm
 
-class StackedCustomLstm(torch.nn.Module):
+@Seq2SeqEncoder.register("stacked_custom_lstm")
+class StackedCustomLstm(PytorchSeq2SeqWrapper):
     """
     A stacked LSTM with LSTM layers which alternate between going forwards over
     the sequence and going backwards. This implementation is based on the
@@ -96,5 +97,3 @@ class StackedCustomLstm(torch.nn.Module):
         return outputs, states
 
 
-
-Seq2SeqEncoder.register("stacked_custom_lstm")(_Seq2SeqWrapper(StackedCustomLstm))

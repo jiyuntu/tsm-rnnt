@@ -11,7 +11,7 @@ from allennlp.common.util import START_SYMBOL, END_SYMBOL
 from allennlp.data.dataset_readers.dataset_reader import DatasetReader
 from allennlp.data.fields import TextField
 from allennlp.data.instance import Instance
-from allennlp.data.tokenizers import Token, Tokenizer, WordTokenizer
+from allennlp.data.tokenizers import Token, Tokenizer, SpacyTokenizer
 from allennlp.data.token_indexers import TokenIndexer, SingleIdTokenIndexer
 
 logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
@@ -35,7 +35,7 @@ class Seq2SeqDatasetReader(DatasetReader):
     ----------
     source_tokenizer : ``Tokenizer``, optional
         Tokenizer to use to split the input sequences into words or other kinds of tokens. Defaults
-        to ``WordTokenizer()``.
+        to ``SpacyTokenizer()``.
     target_tokenizer : ``Tokenizer``, optional
         Tokenizer to use to split the output sequences (during training) into words or other kinds
         of tokens. Defaults to ``source_tokenizer``.
@@ -64,7 +64,7 @@ class Seq2SeqDatasetReader(DatasetReader):
         super().__init__(lazy)
         self._source_affix = source_affix
         self._target_affix = target_affix
-        self._source_tokenizer = source_tokenizer or WordTokenizer()
+        self._source_tokenizer = source_tokenizer or SpacyTokenizer()
         self._target_tokenizer = target_tokenizer or self._source_tokenizer
         self._source_token_indexers = source_token_indexers or {
             "tokens": SingleIdTokenIndexer()}

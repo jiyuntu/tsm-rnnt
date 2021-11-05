@@ -10,9 +10,7 @@ from torch.nn.modules.rnn import LSTMCell
 from allennlp.common.checks import ConfigurationError
 from allennlp.common.util import START_SYMBOL, END_SYMBOL
 from allennlp.data.vocabulary import Vocabulary
-from allennlp.modules.attention import LegacyAttention
 from allennlp.modules import Attention, TextFieldEmbedder, Seq2SeqEncoder
-from allennlp.modules.similarity_functions import SimilarityFunction
 from allennlp.models.model import Model
 from allennlp.modules.token_embedders import Embedding
 from allennlp.nn import util
@@ -57,7 +55,7 @@ class Seq2SeqLuong(Model):
         of decoding, this is the function used to compute similarity between the decoder hidden
         state and encoder outputs.
     attention_function: ``SimilarityFunction``, optional (default = None)
-        This is if you want to use the legacy implementation of attention. This will be deprecated
+        Deprecated. This is if you want to use the legacy implementation of attention. This will be deprecated
         since it consumes more memory than the specialized attention modules.
     beam_size : ``int``, optional (default = None)
         Width of the beam for beam search. If not specified, greedy decoding is used.
@@ -79,7 +77,6 @@ class Seq2SeqLuong(Model):
                  max_decoding_steps: int,
                  target_embedding_dim: int,
                  attention: Attention = None,
-                 attention_function: SimilarityFunction = None,
                  beam_size: int = None,
                  target_namespace: str = "tokens",
                  scheduled_sampling_ratio: float = 0.,
@@ -119,8 +116,6 @@ class Seq2SeqLuong(Model):
                 raise ConfigurationError("You can only specify an attention module or an "
                                          "attention function, but not both.")
             self._attention = attention
-        elif attention_function:
-            self._attention = LegacyAttention(attention_function)
         else:
             self._attention = None
 
@@ -244,7 +239,6 @@ class Seq2SeqLuong(Model):
 
         return output_dict
 
-    @overrides
     def decode(self, output_dict: Dict[str, torch.Tensor]) -> Dict[str, torch.Tensor]:
         """
         Finalize predictions.

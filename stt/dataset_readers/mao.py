@@ -18,7 +18,7 @@ from allennlp.data.dataset_readers.dataset_reader import DatasetReader
 from allennlp.data.fields import Field, TextField, ArrayField, MetadataField
 from allennlp.data.fields import LabelField, SequenceLabelField, ListField
 from allennlp.data.instance import Instance
-from allennlp.data.tokenizers import Tokenizer, WordTokenizer, Token
+from allennlp.data.tokenizers import Tokenizer, SpacyTokenizer, Token
 from allennlp.data.token_indexers import TokenIndexer, SingleIdTokenIndexer
 
 from stt.dataset_readers.utils import pad_and_stack, word_to_phones, get_fisher_callhome_transcripts
@@ -162,7 +162,7 @@ class SpeechToTextDatasetReader(DatasetReader):
     ----------
     source_tokenizer : ``Tokenizer``, optional
         Tokenizer to use to split the input sequences into words or other kinds of tokens. Defaults
-        to ``WordTokenizer()``.
+        to ``SpacyTokenizer()``.
     target_tokenizer : ``Tokenizer``, optional
         Tokenizer to use to split the output sequences (during training) into words or other kinds
         of tokens. Defaults to ``source_tokenizer``.
@@ -196,7 +196,7 @@ class SpeechToTextDatasetReader(DatasetReader):
                  trn_file: str = "trn.txt",
                  lazy: bool = False) -> None:
         super().__init__(lazy)
-        self._target_tokenizer = target_tokenizer or WordTokenizer()
+        self._target_tokenizer = target_tokenizer or SpacyTokenizer()
         self._target_token_indexers = target_token_indexers or {
             "tokens": SingleIdTokenIndexer(start_tokens=[START_SYMBOL], end_tokens=[END_SYMBOL]),
             "token_characters": CharactersIndexer()
